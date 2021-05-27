@@ -1,0 +1,277 @@
+---
+title: "Check digital lives survey data"
+author: "Maxime Walder"
+date: "5/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+
+getSurvey <- function() {
+  
+  ### Load the data
+  data <- read.csv("digital lives 2nd survey - master_May 26, 2021_08.05.csv")
+  data <- data[-c(1,2),]
+  
+  ### keep respondents that answer in the test
+  data <- data[as.Date(data$StartDate)>="2021-05-25",]
+  
+  return(data)
+
+}
+
+data <- getSurvey()
+```
+
+## Table of contents
+
+* Sociodemographics
+
+* Politische Lage
+
+* Electoral knowledge and participation
+
+* Social Media use
+
+* Local or not Local
+
+* Transparancy Experiment
+
+* Conjoint experiment
+
+* Video
+
+* Inequality and Climate change
+
+* Issue with Module E
+
+* All the variables
+
+
+## Sociodemographics
+
+```{r}
+
+table(data$year_of_birth) 
+
+
+table(data$gender)
+
+
+table(data$region)
+table(data$region, data$Q_Language)
+
+
+table(as.numeric(data$highest_ed))
+table(as.numeric(data$highest_ed), data$Q_Language)
+
+```
+
+
+
+## Politische Lage
+
+```{r}
+
+table(data$emotions_1)
+table(data$emotions_2)
+table(data$emotions_3)
+table(data$emotions_4)
+
+table(data$emotions_1, data$Q_Language) ## checks with language
+table(data$emotions_2, data$Q_Language)
+table(data$emotions_3, data$Q_Language)
+table(data$emotions_4, data$Q_Language)
+
+
+```
+
+## Electoral knowledge and participation
+
+```{r}
+
+
+table(data$interest_in_pol)
+
+table(data$left_right_1)
+
+table(data$voted)
+table(data$party_vote)
+table(data$voted, data$party_vote)
+
+table(data$party_member)
+table(data$which_member)
+table(data$party_member, data$which_member)
+
+table(data$close_party)
+table(data$somewhat_close_party)
+table(data$which_cl_party)
+
+table(data$most_imp_topics_1)
+table(data$most_imp_topics_2)
+table(data$most_imp_topics_3)
+table(data$most_imp_topics_4)
+table(data$most_imp_topics_5)
+table(data$most_imp_topics_6)
+table(data$most_imp_topics_7)
+
+
+table(data$nr_parties_guess)
+table(data$l_party_guess)
+table(data$perc_w_guess)
+
+
+table(data$complexity_pol_1)
+table(data$complexity_pol_2)
+table(data$complexity_pol_3)
+
+
+
+```
+
+
+## Social Media Use
+```` {r}
+table(data$sm_use_1)
+table(data$sm_use_2)
+table(data$sm_use_3)
+table(data$sm_use_4)
+
+```
+
+
+## Local VS not Local 
+
+```{r}
+table(data$local_or_notlocal_text) 
+
+```
+The randomization has worked but I would add an embedeed variable (like local_or_not_local_value) to have a clear idea what treatment respondents were assigned to. The issue for now is that every statement in a different language and from a different region have different string values. By setting a variable local_or_not_local_value = 1 for the first treatment or local_or_not_local_value = 2 for the second treatment, it would be much easier to prepare the data for analysis. 
+
+
+## Transparancy Experiment
+
+```{r}
+
+names_col <- colnames(data)
+
+## Prints the value for each of the treatment category
+for (i in 75:126) {
+  print(names_col[i])
+  print(table(data[,i])) 
+}
+```
+
+## Conjoint experiment
+
+```{r}
+
+
+data_conj <- data[,c(127:131, 256:319)]
+names_data_conj <- colnames(data_conj)
+
+for (i in c(3+(3*1:8))) {
+  print(names_data_conj[i])
+  print(table(data_conj[i])) ### Checnks the name attribute of each attribute
+}
+
+```
+
+We see that the treatment see to have worked but it is weird that in most case the 8th category was about social media... This might be due to randomness because it does not seem to indicate clear pattern on any other item. 
+
+Let's see if the values for each attributes are well distributed 
+
+```{r}
+
+## For politician 1
+for (i in c(26+(5*1:8))) {
+  print(names_data_conj[i])
+  print(table(data_conj[i])) ### Checnks the name attribute of each attribute
+}
+
+## For politician 2
+
+for (i in c(27+(5*1:8))) {
+  print(names_data_conj[i])
+  print(table(data_conj[i])) ### Checnks the name attribute of each attribute
+}
+
+```
+
+## Video
+
+```{r}
+
+table(data$vid_cgroup_check1)
+table(data$vid_cgroup_check2)
+
+# Issue to identify which respondents have which treatment
+# Solution: Play with the timer.
+
+data <- data %>% 
+  mutate(vid1 = ifelse(vid_1_timer_Click.Count=="", 0, 1),
+         vid2 = ifelse(vid_2_timer_Click.Count=="", 0, 1),
+         vid3 = ifelse(vid_3_timer_Click.Count=="", 0, 1),
+         vidcgroup = ifelse(vid_cgroup_timer_Click.Count=="", 0, 1))
+
+
+table(data$vid1)
+table(data$vid2)
+table(data$vid3)
+table(data$vidcgroup)
+
+```
+
+## Inequality and Climate change
+
+```{r}
+
+table(data$cc_timer_Click.Count)
+table(data$timer_cc_2_Click.Count)
+table(data$timer_ineq_Click.Count)
+table(data$timer_ineq2_Click.Count)
+
+# Issues with the control group. Have to deduce who was in it.
+
+data <- data %>% 
+  mutate(cc_group = ifelse(cc_temp=="", 0, 1),
+         cc_experts_group = ifelse(cc_timer_Click.Count=="", 0, 1),
+         cc_voters_group = ifelse(timer_cc_2_Click.Count=="", 0, 1),
+         cc_control_group = ifelse(cc_group==1 & cc_experts_group==0 & cc_voters_group==0, 1, 0),
+         ineq_group = ifelse(ineq_us_e=="", 0, 1),
+         ineq_experts_group = ifelse(timer_ineq_Click.Count=="", 0, 1),
+         ineq_voters_group = ifelse(timer_ineq2_Click.Count=="", 0, 1),
+         ineq_control_group = ifelse(ineq_group==1 & ineq_experts_group==0 & ineq_voters_group==0, 1, 0))
+
+
+table(data$cc_experts_group, data$cc_voters_group, data$cc_control_group)
+table(data$ineq_experts_group, data$ineq_voters_group, data$ineq_control_group)
+```
+
+* Issue with Module E
+
+In modul E, it is not possible to know what treatments respondents were assigned to. Thus, it would need to be changed in the survey. What I woud propose is to make the randomization in the survey flow instead of whithin the block and to define a global variable which takes a different value for different treatment assignation. 
+
+* All the variables
+
+Here, I just loop and print all the variables with the name of the corresponding columns. It can help detect codes that should not be there. For instance, in the Module D, respondents are asked about warming temperature but multiple answers are allowed. 
+
+Tip: This is a very long part but the variable names are printed. You can search for the variable you want by simply tiping the name of the variable of interest in the search field. 
+
+```{r}
+
+
+data <- getSurvey()
+names_col <- colnames(data)
+
+for (i in 18:221){
+  print(names_col[i])
+  print(table(data[,i]))
+}
+````
+
+
+
+

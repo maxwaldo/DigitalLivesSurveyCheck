@@ -1,0 +1,1281 @@
+---
+title: "Codebook for the Digital Lives Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+data_bilendi <- read.csv("digital lives 2nd survey - master_September 21, 2021_05.40.csv")
+data_bilendi <- data_bilendi[-c(1,2),]
+data_bilendi <- data_bilendi[data_bilendi$c_age_pos!="",]
+
+```
+
+## Block list
+
+-- [Meta Data (Whole sample)]
+
+-- [Sociodemographic characteristics (whole sample)]
+
+-- [Emotion regarding the political situation (DE and CH-DE only)]
+
+-- [Electoral and Political participation (whole sample)]
+
+-- [(Social) Media Use]
+
+-- [Attention check]
+
+-- [Local VS Not Local]
+
+-- [Transparency experiment]
+
+-- [Conjoint experiment]
+
+-- [Module B. Video presentation]
+
+-- [Module C: Left-right positioning of candidates]
+
+-- [Module D: Info-seeking behaviour]
+
+-- [Module E: Trade agreement experiment]
+
+-- [Sociodemographics backend]
+
+-- [Module A]
+
+-- [End of survey]
+
+-- [Variable with specific values and labels by country]
+
+- [Region of residency]
+
+- [Highest education achieved]
+
+- [Income category]
+
+- [Party vote in the last national election]
+
+- [Party membership of respondents]
+
+- [Closest party]
+
+- [Biggest party on the left]
+
+-- [Additional global variables]
+
+
+
+## Meta Data (Whole sample)
+
+
+| Variable Name | Description | Values |
+| --- | --- | ---------- |
+| StartDate | Starting date | Y-M-D h-m-s |
+| EndDate | Date Survey end | Y-M-D h-m-s |
+| Status | Status of the survey | 0 = normal response; 1 = preview; 8 = potential Spam |
+| IPAddress | IP Adress of respondent | IP adress number |
+| Progress | Percent of progress in the survey | 0-100 |
+| Duration..in.seconds. | Duration of the survey for respondents in second | min = `r min(data_bilendi$Duration..in.seconds., na.rm=T)`, max = `r max(data_bilendi$Duration..in.seconds., na.rm=T)`|
+| Finished | Status of the survey finished or not | 0 = Finnished, 1 = not Finished |
+| RecordedDate | Date of survey data recording |  Y-M-D h-m-s |
+| RecipientFirstName | Respondents' first name | [Empty] |
+| RecipientLastName | Respondents' last name | [Empty] |
+| RecipientEmail | Respondents' Email | [Empty] |
+| ExternalReference | Respondents' external data reference | [Empty] |
+| LocationLatitude | Respondents' Latitude | latitude values |
+| LocationLongitude | Respondents' Logitude | longitude values |
+| DistributionChannel | Channel of distribution for the survey | anonymous (for anonymous link) |
+| UserLanguage | Respondents' language. Same as Q_Language. The values represent the abbreviations | BE-FR = `r nrow(data_bilendi[data_bilendi$UserLanguage=="BE-FR",])`, BE-NL = `r nrow(data_bilendi[data_bilendi$UserLanguage=="BE-NL",])`, CH-FR = `r nrow(data_bilendi[data_bilendi$UserLanguage=="CH-FR",])`, CH-DE = `r nrow(data_bilendi[data_bilendi$UserLanguage=="CH-DE",])`, DE = `r nrow(data_bilendi[data_bilendi$UserLanguage=="DE",])`, EN-GB = `r nrow(data_bilendi[data_bilendi$UserLanguage=="EN-GB",])`, FR = `r nrow(data_bilendi[data_bilendi$UserLanguage=="FR",])`, NL = `r nrow(data_bilendi[data_bilendi$UserLanguage=="NL",])`, PL = `r nrow(data_bilendi[data_bilendi$UserLanguage=="PL",])` |
+
+## Sociodemographic characteristics (whole sample)
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | ----- | --------------- |
+| year_of_birth | Respondents year of birth | Year of birth (numeric) |
+| gender | Gender of respondents | 1 = men, 2 = female, 3 = prefer not to say |
+| region | Region of residency of survey respondents | See section Variable with specific values and labels by country and subsection Region of residency |
+| highest_ed | Highest level of education achieved | See section Variable with specific values and labels by country and subsection Highest education achieved |
+
+## Emotion regarding the political situation (DE and CH-DE only)
+| Variable Name | Variable Description | Values and labels |
+| ---- | ----- | --------------- |
+| emotion_1 | zuversichtlich (confident) | 0 = uberhäupt nicht (not at all), 10 = Sehr (very) |
+| emotion_2 | besorgt (concerned) | 0 = uberhäupt nicht (not at all), 10 = Sehr (very) |
+| emotion_3 | verärgert (angry) | 0 = uberhäupt nicht (not at all), 10 = Sehr (very) |
+| emotion_4 | ängstlich (anxious) | 0 = uberhäupt nicht (not at all), 10 = Sehr (very) |
+
+## Electoral and Political participation (whole sample)
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | ----- | --------------- |
+| interest_in_pol | Political interest | 1 = very interest, 2 = somewhat interested, 3 = not much interested, 4 = not interested |
+| left_right_1 | left-right self position | 0 = most left, 5 = center, 10 = most right |
+| voted | Participation in the last election | 1 = Yes, 2 = No |
+| party_vote | Party voted for in the last election (only if voted=Yes) | See section Variable with specific values and labels by country and subsection Party vote in the last national election |
+| party_vote_Text | If "other" selected in party_vote, text entry for the party voted | Text entry |
+| party_member| Membership to a political party | 1 = Yes, 2 = No |
+| which_member | Party voted for in the last election (only if party_member=Yes) | See section Variable with specific values and labels by country and subsection Party vote in the last national election |
+| which_party_Text | If "other" selected in which_party, text entry for the party voted | Text entry |
+| close_party | Closeness to a political party | 1 = Yes, 2 = No, 3=don't know |
+| somewhat_close_party | Closeness to a political party | 1 = Yes, 2 = No, 3=don't know |
+| which_cl_party | Party voted for in the last election (only if close_party or somewhat_close_party=Yes) | See section Variable with specific values and labels by country and subsection Closest party |
+| which_party_Text | If "other" selected in which_party, text entry for the party voted | Text entry |
+| most_important_topic_1 | Importance of economic inequality issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| most_important_topic_2 | Importance of crime and terrorism issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| most_important_topic_3 | Importance of unemployment issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| most_important_topic_4 | Importance of public debt issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| most_important_topic_5 | Importance of immigration issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| most_important_topic_6 | Importance of public service issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| most_important_topic_7 | Importance of climate change issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+| timer_First.Click | How many seconds until the first click on page | Number of seconds |
+| timer_Last.Click | How many seconds until the last click on page | Number of seconds |
+| timer_Page.Submit | How many seconds until the page is submitted | Number of seconds |
+| timer_Click.Count | How many clicks until the page is submitted | Number of clicks |
+| nr_party_guess | How many parties in the national government | Text entry |
+| l_party_guess | What is the biggest leftist party in parliament | See section Variable with specific values and labels by country and subsection Biggest party on the left  |
+| perc_w_guess | Percentage of femal representative in parliament | Text entry |
+| complexity_pol_1 | Agree with the statement : "Politics is such a complex issue that people like me cannot understand what is going on" | 1 = Strongly disagree, 2 = Somewhat disagree, 3 = Neither agree nor disagree, 4 = Somewhat agree, 5 = Strongly agree |
+| complexity_pol_2 | Agree with the statement : "I feel like I could play an active role in a group dealing with political issues" | 1 = Strongly disagree, 2 = Somewhat disagree, 3 = Neither agree nor disagree, 4 = Somewhat agree, 5 = Strongly agree |
+| complexity_pol_3 | Agree with the statement : "I am perfectly able to understand and assess important political questions" | 1 = Strongly disagree, 2 = Somewhat disagree, 3 = Neither agree nor disagree, 4 = Somewhat agree, 5 = Strongly agree |
+
+## (Social) Media Use
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | ----- | --------------- |
+| sm_use_1 | How many times respondents use Facebook | 1 = At least once an hour, 2 = Several times a day, 3 = Once a day, 4 = At least once a week, 5 = Less than once a week, 6 = Not at all/never |
+| sm_use_2 | How many times respondents use Twitter | 1 = At least once an hour, 2 = Several times a day, 3 = Once a day, 4 = At least once a week, 5 = Less than once a week, 6 = Not at all/never |
+| sm_use_3 | How many times respondents use Instagram | 1 = At least once an hour, 2 = Several times a day, 3 = Once a day, 4 = At least once a week, 5 = Less than once a week, 6 = Not at all/never |
+| sm_use_4 | How many times respondents use other networks | 1 = At least once an hour, 2 = Several times a day, 3 = Once a day, 4 = At least once a week, 5 = Less than once a week, 6 = Not at all/never |
+
+## Attention check
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | ----- | --------------- |
+| attention_c | Attention check question. Respondents must reply "pink" otherwise they are screened out | 1 = red, 2 = green, 3 = pink |
+
+## Local VS Not Local 
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | ----- | --------------- |
+| local_male_out_1 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_male_out_2 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_male_out_3 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_male_out_4 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_female_out_1 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_female_out_2 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_female_out_3 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_female_out_4 | Agree disagree with the statement I can imagine voting for this politician in the upcoming national elections | completely disagree = 0, completely agree = 10 |
+| local_or_notlocal_social_network | On which plateform fif respondents see the message | Text values: Facebook, Instagram, News (for blog) and Twitter |
+| local_or_notlocal_value | Whether respondents see the local treatment or not | Text values: local = Local treatment,  notlocal = not the local treatment |
+
+## Transparency experiment
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | --------------- | ----- |
+|Transp_F_IT_C1_Q1_16|Female treatment,No transparancy, 1 membership, Burton Tech.,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_C1_Q1_17|Female treatment,No transparancy, 1 membership, Burton Tech.,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_C1_Q1_DO|,,Order of the shown questions Transp_F_IT_C1_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 16|
+|Transp_Q2|Female treatment,,Manipulation check whether politician is transparant on her finance (for femal treatment)|0=no, 1=yes|
+|Transp_Q3|Female treatment,,Munipulation check, how many organisation the politician seats on (for femal treatment)|1=1, 2=2 or 3, 3 = 4 or 5, 4 = 6 or more|
+|Transp_F_IT_C5_Q1_16|Female treatment,No transparancy, 5 membership, Burton Tech.,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_C5_Q1_17|Female treatment,No transparancy, 5 membership, Burton Tech.,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_C5_Q1_DO|,,Order of the shown questions Transp_F_IT_C5_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 16|
+|Transp_F_IT_P1_Q1_16|Female treatment,No transparancy, 1 membership, Child aid,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_P1_Q1_17|Female treatment,No transparancy, 1 membership, Child aid,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_P1_Q1_DO|,,Order of the shown questions Transp_F_IT_P1_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 17|
+|Transp_F_IT_P5_Q1_16|Female treatment,No transparancy, 5 membership, Child aid,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_P5_Q1_17|Female treatment,No transparancy, 5 membership, Child aid,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_IT_P5_Q1_DO|,,Order of the shown questions Transp_F_IT_P5_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 18|
+|Transp_F_T_C1_180_Q1_16|Female treatment,Full transparancy, 1 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_C1_180_Q1_17|Female treatment,Full transparancy, 1 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_C1_180_Q1_DO|,,Order of the shown questions Transp_F_T_C1_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 19|
+|Transp_F_T_C1_20_Q1_16|Female treatment,Full transparancy, 1 membership, Burton Tech., 16'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_C1_20_Q1_17|Female treatment,Full transparancy, 1 membership, Burton Tech., 16'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_C1_20_Q1_DO|,,Order of the shown questions Transp_F_T_C1_20_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 20|
+|Transp_F_T_C5_180_Q1_16|Female treatment,Full transparancy, 5 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_C5_180_Q1_17|Female treatment,Full transparancy, 5 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_C5_180_Q1_DO|,,Order of the shown questions Transp_F_T_C5_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 21|
+|Transp_F_T_P1_PB_Q1_16|Female treatment,Full transparancy, 1 membership, Child aid., No additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P1_PB_Q1_17|Female treatment,Full transparancy, 1 membership, Child aid., No additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P1_PB_Q1_DO|,,Order of the shown questions Transp_F_T_P1_PB_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 22|
+|Transp_F_T_P1_180_Q1_16|Female treatment,Full transparancy, 1 membership, Child aid., 122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P1_180_Q1_17|Female treatment,Full transparancy, 1 membership, Child aid.,122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P1_180_Q1_DO|,,Order of the shown questions Transp_F_T_P1_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 23|
+|Transp_F_T_P1_20_Q1_16|Female treatment,Full transparancy, 1 membership, Child aid., 16'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P1_20_Q1_17|Female treatment,Full transparancy, 1 membership, Child aid., 16000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P1_20_Q1_DO|,,Order of the shown questions Transp_F_T_P1_20_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 24|
+|Transp_F_T_P5_PB_Q1_16|Female treatment,Full transparancy, 5 membership, Child aid., No additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P5_PB_Q1_17|Female treatment,Full transparancy, 5 membership, Child aid., No additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P5_PB_Q1_DO|,,Order of the shown questions Transp_F_T_P5_PB_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 25|
+|Transp_F_T_P5_180_Q1_16|Female treatment,Full transparancy, 5 membership, Child aid.,122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P5_180_Q1_17|Female treatment,Full transparancy, 5 membership, Child aid., 122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_F_T_P5_180_Q1_DO|,,Order of the shown questions Transp_F_T_P5_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 26|
+|Transp_M_IT_C1_Q1_16|Male treatment,No transparancy, 1 membership, Burton Tech.,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_C1_Q1_17|Male treatment,No transparancy, 1 membership, Burton Tech.,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_C1_Q1_DO|,,Order of the shown questions Transp_M_IT_C1_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 27|
+|Transp_Q2.1|Male treatment,,Manipulation check whether politician is transparant on her finance (for male treatment)|0=no, 1=yes|
+|Transp_Q3.1|Male treatment,,Munipulation check, how many organisation the politician seats on (for male treatment)|1=1, 2=2 or 3, 3 = 4 or 5, 4 = 6 or more|
+|Transp_M_IT_C5_Q1_16|Male treatment,No transparancy, 5 membership, Burton Tech.,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_C5_Q1_17|Male treatment,No transparancy, 5 membership, Burton Tech.,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_C5_Q1_DO|,,Order of the shown questions Transp_M_IT_C5_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 27|
+|Transp_M_IT_P1_Q1_16|Male treatment,No transparancy, 1 membership, Child aid,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_P1_Q1_17|Male treatment,No transparancy, 1 membership, Child aid,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_P1_Q1_DO|,,Order of the shown questions Transp_M_IT_P1_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 28|
+|Transp_M_IT_P5_Q1_16|Male treatment,No transparancy, 5 membership, Child aid,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_P5_Q1_17|Male treatment,No transparancy, 5 membership, Child aid,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_IT_P5_Q1_DO|,,Order of the shown questions Transp_M_IT_P5_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 29|
+|Transp_M_T_C1_180_Q1_16|Male treatment,Full transparancy, 1 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_C1_180_Q1_17|Male treatment,Full transparancy, 1 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_C1_180_Q1_DO|,,Order of the shown questions Transp_M_T_C1_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 30|
+|Transp_M_T_C1_20_Q1_16|Male treatment,Full transparancy, 1 membership, Burton Tech., 16'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_C1_20_Q1_17|Male treatment,Full transparancy, 1 membership, Burton Tech., 16'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_C1_20_Q1_DO|,,Order of the shown questions Transp_M_T_C1_20_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 31|
+|Transp_M_T_C5_180_16|Male treatment,Full transparancy, 5 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_C5_180_17|Male treatment,Full transparancy, 5 membership, Burton Tech., 122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_C5_180_DO|,,Order of the shown questions Transp_M_T_C5_180_DO|16/17 first 16 then 17, 17/16 first 17 then 32|
+|Transp_M_T_P1_PB_Q1_16|Male treatment,Full transparancy, 1 membership, Child aid., No additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P1_PB_Q1_17|Male treatment,Full transparancy, 1 membership, Child aid., No additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P1_PB_Q1_DO|,,Order of the shown questions Transp_M_T_P1_PB_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 33|
+|Transp_M_T_P1_180_Q1_16|Male treatment,Full transparancy, 1 membership, Child aid., 122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P1_180_Q1_17|Male treatment,Full transparancy, 1 membership, Child aid.,122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P1_180_Q1_DO|,,Order of the shown questions Transp_M_T_P1_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 34|
+|Transp_M_T_P1_20_Q1_16|Male treatment,Full transparancy, 1 membership, Child aid., 16'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P1_20_Q1_17|Male treatment,Full transparancy, 1 membership, Child aid., 16000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P1_20_Q1_DO|,,Order of the shown questions Transp_M_T_P1_20_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 35|
+|Transp_M_T_P5_PB_Q1_16|Male treatment,Full transparancy, 5 membership, Child aid., No additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P5_PB_Q1_17|Male treatment,Full transparancy, 5 membership, Child aid., No additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P5_PB_Q1_DO|,,Order of the shown questions Transp_M_T_P5_PB_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 36|
+|Transp_M_T_P5_180_Q1_16|Male treatment,Full transparancy, 5 membership, Child aid.,122'000 pounds of additional revenu,,Agree with the statement "I can imagine voting for this politician in the upcoming national elections."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P5_180_Q1_17|Male treatment,Full transparancy, 5 membership, Child aid., 122'000 pounds of additional revenu,,Agree with the statement "This politician seems trustworthy."|0 = Completely disagree, 10= Completely Agree|
+|Transp_M_T_P5_180_Q1_DO|,,Order of the shown questions Transp_M_T_P5_180_Q1_DO|16/17 first 16 then 17, 17/16 first 17 then 37|
+
+
+
+## Conjoint experiment 
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+|conj_vote_1|Likelihood to vote for politician A|0-10 scale|
+|conj_vote_2|Likelihood to vote for politician B|0-10 scale|
+|conj_choice|Respondent choice if vote for one of the two||
+|conj_better|Who is the better politician||
+|conj_why|Resason why respondent choose the politician||
+|c_age_pos|Position of the age attribute|1-8 indicates which row the attribute was on|
+|c_age_num_pol1|Value of the age attribute for politician A|0=33, 1=43, 2=53, 3=62, 4=73|
+|c_age_num_pol2|Value of the age attribute for politician B |0=33, 1=43, 2=53, 3=62, 4=74|
+|c_career_pos|Position of the career attribute|1-8 indicates which row the attribute was on|
+|c_career_num_pol1|Value of the career attribute for politician A|0 = served in several party offices (e.g. leader of the regional party in the last 15 years), 1 = joined the party three years before entering parliament|
+|c_career_num_pol2|Value of the career attribute for politician B |1 = served in several party offices (e.g. leader of the regional party in the last 15 years), 1 = joined the party three years before entering parliament|
+|c_gender_pos|Position of the gender attribute|1-8 indicates which row the attribute was on|
+|c_gender_num_pol1|Value of the  gender attribute for politician A|0=male, 1=female|
+|c_gender_num_pol2|Value of the  gender attribute for politician B |0=male, 1=female|
+|c_legeff_pos|Position of the Legislative efficiency attribute|1-8 indicates which row the attribute was on|
+|c_legeff_num_pol1|Value of the Legislative efficiency attribute for politician A|0 = is highly successful to get his/her suggestions accepted in parliament, 1 = manages to get only some of his/her suggestions accepted in parliament|
+|c_legeff_num_pol2|Value of the Legislative efficiency attribute for politician B |1 = is highly successful to get his/her suggestions accepted in parliament, 1 = manages to get only some of his/her suggestions accepted in parliament|
+|c_voteror_pos|Position of the presence in the constituency attribute|1-8 indicates which row the attribute was on|
+|c_voteror_num_pol1|Value of the presence in the constituency attribute for politician A|0 = spends a lot of time with voters in the constituency, 1 = spends little time with voters in the constituency|
+|c_voteror_num_pol2|Value of the presence attribute for politician B |1 = spends a lot of time with voters in the constituency, 1 = spends little time with voters in the constituency|
+|c_voterknow_pos|Position of the knowledge of voters attribute|1-8 indicates which row the attribute was on|
+|c_voterknow_num_pol1|Value of the knowledge of voters attribute for politician A|0 = knows the positions of the local voters well, 1 = does not know the positions of the local voters well|
+|c_voterknow_num_pol2|Value of the knowledge of voters attribute for politician B |1 = knows the positions of the local voters well, 1 = does not know the positions of the local voters well|
+|c_prof_pos|Position of the profession attribute|1-8 indicates which row the attribute was on|
+|c_prof_num_pol1|Value of the profession attribute for politician A|0 = personal assistant to a politician, 1 = medical doctor, 2 = lawyer, 3 = farmer, 4 = businesswoman/man|
+|c_prof_num_pol2|Value of the profession attribute for politician B |1 = personal assistant to a politician, 1 = medical doctor, 2 = lawyer, 3 = farmer, 4 = businesswoman/man|
+|c_smedia_pos|Position of the social media communication attribute|1-8 indicates which row the attribute was on|
+|c_smedia_num_pol1|Value of the social media communication attribute for politician A|0 = communicates regularly views and activities on Twitter, Facebook and Instagram, 1 = does not communicate views and activities on Twitter, Facebook and Instagram|
+|c_smedia_num_pol2|Value of the social media communication attribute for politician B |1 = communicates regularly views and activities on Twitter, Facebook and Instagram, 1 = does not communicate views and activities on Twitter, Facebook and Instagram|
+
+
+
+## Module B. Video presentation
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+| vid_cgroup_timer_First.Click | How many seconds until the first click on page (control group)| Number of seconds |
+| vid_cgroup_timer_Last.Click | How many seconds until the last click on page (control group)| Number of seconds |
+| vid_cgroup_timer_Page.Submit | How many seconds until the page is submitted (control group)| Number of seconds |
+| vid_cgroup_timer_Click.Count | How many clicks until the page is submitted (control group)| Number of clicks |
+| vid_cgroup_check1|Able to see the video|1 = Yes, 2 = No, 3 = other, text entry|
+| vid_cgroup_check1_3_TEXT|If selected other to vid_cgroup_check1, text entry|Text entry|
+| vid_cgroup_check2|Topic of the video|1=Patients, 2 = Lying and integrity in politics, 3 = Having to change one’s attitudes as a politician, 4 = Political parties in Switzerland|
+| vid_outc_comp|Agree with the following statement: What people call "compromise" in politics is really just selling out on one's principles.|1 = Strongly agree, 2 = somewhat agree, 3= Neither agree nor disagree, 4 = Somewhat disagree, 5 = Strongly disagree|
+|vid_outc_people|Agree with the following statement: The people and not politicians should make our most important policy decisions.|1 = Strongly agree, 2 = somewhat agree, 3= Neither agree nor disagree, 4 = Somewhat disagree, 5 = Strongly disagree|
+| vid_outc_parl|Agree with the following statement: The politicians in parliament should follow the will of the people.|1 = Strongly agree, 2 = somewhat agree, 3= Neither agree nor disagree, 4 = Somewhat disagree, 5 = Strongly disagree|
+| vid_outc_gov|Agree with the following statement: Government officials use their power to try to improve people's lives. |1 = Strongly agree, 2 = somewhat agree, 3= Neither agree nor disagree, 4 = Somewhat disagree, 5 = Strongly disagree|
+| vid_outc_parl_people|Agree with the following statement: Members of Parliament very quickly lose touch with ordinary people.|1 = Strongly agree, 2 = somewhat agree, 3= Neither agree nor disagree, 4 = Somewhat disagree, 5 = Strongly disagree|
+| vid_1_timer_First.Click | How many seconds until the first click on page (first video)| Number of seconds |
+| vid_1_timer_Last.Click | How many seconds until the last click on page (first video)| Number of seconds |
+| vid_1_timer_Page.Submit | How many seconds until the page is submitted (first video)| Number of seconds |
+| vid_1_timer_Click.Count | How many clicks until the page is submitted (first video)| Number of clicks |
+| vid_2_timer_First.Click | How many seconds until the first click on page (second video)| Number of seconds |
+| vid_2_timer_Last.Click | How many seconds until the last click on page (second video)| Number of seconds |
+| vid_2_timer_Page.Submit | How many seconds until the page is submitted (second video)| Number of seconds |
+| vid_2_timer_Click.Count | How many clicks until the page is submitted (second video)| Number of clicks |
+| vid_3_timer_First.Click | How many seconds until the first click on page (third video)| Number of seconds |
+| vid_3_timer_Last.Click | How many seconds until the last click on page (third video)| Number of seconds |
+| vid_3_timer_Page.Submit | How many seconds until the page is submitted (third video)| Number of seconds |
+| vid_3_timer_Click.Count | How many clicks until the page is submitted (second video)| Number of clicks |
+| modul_B_treatment|Indicates the treatment respondents were assigned to|Text values: control, noTreatment, video1, video2, video3|
+
+
+
+## Module C: Left-right positioning of candidates
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+|lr_1_1|Left-right position of candidate 1 in case 1 (Economic opinion)|Left right scale where 0 = all left and 10 = all right|
+|lr_1_2|Left-right position of candidate 2 in case 1 (Economic opinion)|Left right scale where 0 = all left and 10 = all right|
+|lr_regierung_1|Agree with the statement: The government should take measures to reduce wage differentials.|0-10 scale where 0 = completely disagree and 10 = completely agree|
+|lr_2_1|Left-right position of candidate 1 in case 2 (Opinion traditional/Liberal)|Left right scale where 0 = all left and 10 = all right|
+|lr_2_2|Left-right position of candidate 2 in case 2 (Opinion traditional/Liberal)|Left right scale where 0 = all left and 10 = all right|
+|lr_LGBT_1|Agree with the statement: The government should take measures to reduce wage differentials.|0-10 scale where 0 = completely disagree and 10 = completely agree|
+|lr_exp_control|Response to the riddle: In a lake there is a spot with lily pads. Every day the size of the spot doubles. If it takes 48 days for the lily pads to cover the entire lake, how long would it take for the pads to cover half of the lake?|Text entry|
+|lr_personal_1|Self evaluation on the statement: I enjoy tasks that involve finding new solutions to problems|0-10 scale where 0 = extremely atypical for me and 10 = extremely typical for me|
+|lr_personal_2|Self evaluation on the statement: Thinking is not my idea of fun|0-10 scale where 0 = extremely atypical for me and 10 = extremely typical for me|
+|lr_personal_3|Self evaluation on the statement:I'd rather do something where I don't have to think much than something where I have to think too much.|0-10 scale where 0 = extremely atypical for me and 10 = extremely typical for me|
+
+## Module D: Info-seeking behaviour
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+|cc_temp|When has the Earth experienced the greatest increase in temperature?|1 = In the last 100 years, 2 = In the last 30 years, 3 = In the last 10 years|
+|cc_importance_1| Importance of economic inequality issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_importance_2| Importance of crime and terrorism issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_importance_3| Importance of unemployment issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_importance_4| Importance of public debt issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_importance_5| Importance of immigration issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_importance_6| Importance of public service issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_importance_7| Importance of climate change issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|cc_petition|How likely it is that you will sign a petition on climate change?|1 = Extremely likely, 2 = somewhat likely, 3 = Neither likely, nor unlikely, 4 = somewhat unlikely, 5 = extremely unlikely|
+|cc_eval|Effect of climate change in the respondents country|1 = Completely unworrisome, 2 = somewhat unworrisome, 3 = Neither unworrisome nor worrisome, 4 = somewhat worrisome, 5 = extremely worrisome|
+| cc_timer_timer_First.Click | How many seconds until the first click on page (expert article text on climate change)| Number of seconds |
+| cc_timer_timer_Last.Click | How many seconds until the last click on page (expert article text on climate change)| Number of seconds |
+| cc_timer_timer_Page.Submit | How many seconds until the page is submitted (expert article text on climate change)| Number of seconds |
+| cc_timer_timer_Click.Count | How many clicks until the page is submitted (expert article text on climate change)| Number of clicks |
+|cc_text1_who|attention check, whether the text is from an expert or a citizen|1 = An expert, 2 = a citizen|
+| timer_cc_timer_First.Click | How many seconds until the first click on page (voter article text on climate change)| Number of seconds |
+| timer_cc_timer_Last.Click | How many seconds until the last click on page (voter article text on climate change)| Number of seconds |
+| timer_cc_timer_Page.Submit | How many seconds until the page is submitted (voter article text on climate change)| Number of seconds |
+| timer_cc_timer_Click.Count | How many clicks until the page is submitted (voter article text on climate change)| Number of clicks |
+|cc_argument|Whether respondents want to see the arguments on the debate about climate change|1 = Show me the arguments that were made during the debate, 2 = I want to skip the arguments and answer the questions immediately|
+|cc_time_choice|Whether respondents want to read the article about the past or the current situation on climate change|1 = Show me the article on the past situation of climate change, 2 = Show me the article on the current situation of climate change|
+|ineq_us_e|Economic differences between the US and the EU|1 = In Europe economic differences are larger than in the USA, 2 = In Europe economic differences are smaller than in the USA, 3 = Economic differences in Europe and in the USA are equal|
+|ineq_importance_1| Importance of economic inequality issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_importance_2| Importance of crime and terrorism issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_importance_3| Importance of unemployment issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_importance_4| Importance of public debt issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_importance_5| Importance of immigration issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_importance_6| Importance of public service issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_importance_7| Importance of climate change issues | 1 = Not important at all, 2 = Not important, 3 = Somewhat important, 4 = Very important, 5 = Extremely important |
+|ineq_petition|How likely it is that you will sign a petition on economic inequality?|1 = Extremely likely, 2 = somewhat likely, 3 = Neither likely, nor unlikely, 4 = somewhat unlikely, 5 = extremely unlikely|
+|ineq_eval|Rating of income differences in the country|1 = Unfair, 2 = rather unfair, 3 = Neither fair nor unfair, 4 = rather fair, 5 = fair|
+|timer_ineq_|Timer for time spend on the expert's article on inequalities||
+| timer_ineq_timer_First.Click | How many seconds until the first click on page (expert article text on economic inequalities)| Number of seconds |
+| timer_ineq_timer_Last.Click | How many seconds until the last click on page (expert article text on economic inequalities)| Number of seconds |
+| timer_ineq_timer_Page.Submit | How many seconds until the page is submitted (expert article text on economic inequalities)| Number of seconds |
+| timer_ineq_timer_Click.Count | How many clicks until the page is submitted (expert article text on economic inequalities)| Number of clicks |
+| timer_ineq2_timer_First.Click | How many seconds until the first click on page (voter article text on economic inequalities)| Number of seconds |
+| timer_ineq2_timer_Last.Click | How many seconds until the last click on page (voter article text on economic inequalities)| Number of seconds |
+| timer_ineq2_timer_Page.Submit | How many seconds until the page is submitted (voter article text on economic inequalities)| Number of seconds |
+| timer_ineq2_timer_Click.Count | How many clicks until the page is submitted (voter article text on economic inequalities)| Number of clicks |
+|ineq_argument|Whether respondents want to see the arguments on the debate about climate change|1 = Show me the arguments that were made during the debate, 2 = I want to skip the arguments and answer the questions immediately|
+|ineq_time_choice|Whether respondents want to read the article about the past or the current situation on climate change|1 = Show me the article on the past situation of climate change, 2 = Show me the article on the current situation of climate change|
+|module_D_Group_type|Which group respondents were assigned to|Text values: climatechange or inequality|
+|module_D_Group_treatment|Which treatment respondents were assigned to |text values: assignmen, control, selfselected, steeredcondition|
+|module_D_treatment_type|Whether respondents saw the expert or the voters' article|Text values: Expert or voters |
+
+## Module E: Trade agreement experiment
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+|trade_vote|What respondents voted on the proposal for a trade agreement with indonesia (Swiss respondents)|1 = Yes, 2 = No, 3 = I did not vote, 4 = I don't remember|
+|trade_profit|Who are the actors that benefit the most from this treaty|1 = Small Swiss businesses, 2 = Political elites in Switzerland, 3 = Ordinary citizens in Switzerland, 4 = Small Indonesian businesses, 5 = Political elites in Indonesia, 6 = Ordinary citizens in Indonesia, 7 = Large corporations, 8 = Others_namely|
+|trade_profit_9_TEXT|If people answer "others, namely" to the question trade_profit, reason cited|text entry|
+|trade_pers_benefit|How will the economic agreement affect the respondents personally.|1 = I will not be affected by this agreement, 2 = I will be able to buy cheaper goods in Switzerland, 3 = I will have a better conscious because goods produced in Indonesia will follow better environmental standards, 4 = I will have more job opportunities because Switzerland will export more to Indonesia, 5 = Others, namely|
+|trade_pers_benefit_5_TEXT|If people answer "others, namely" to the question trade_pers_benefit, reason cited|text entry|
+|trade_goals|What respondents think the goal of Switzerland in terms of trade should be|1 = Geopolitics: The Swiss government should aim to position the country strategically in the world, 2 = Efficiency: The Swiss government should aim for the economy to become more efficient through trade so that Swiss people can buy cheaper goods, 3 = Jobs: The Swiss government should open up our economy to make sure there are enough jobs for Swiss people., 4 = Fairness: The Swiss government should make sure that such agreements are fair for all signing parties., 5 = Others, namely|
+|trade_goals_5_TEXT|If people answer "others, namely" to the question trade_goals, reason cited|text entry|
+|trade_vote_again|What respondent would vote if they would vote again|1 = Yes, 2 = No, 3 = I don't know|
+|trade_vote.1|Whether respondents would in favor or against a trade agreement between the EU and indonesia (for Polish respondents)|1 = Yes, 2 = No, 3 = I don't know|
+|trade_profit.1|Who are the actors that benefit the most from this treaty (for Polish respondents)|1 = Small Polish businesses, 2 = Political elites in Poland, 3 = Ordinary citizens in Poland, 4 = Small Indonesian businesses, 5 = Political elites in Indonesia, 6 = Ordinary citizens in Indonesia, 7 = Large corporations, 8 = Others_namely|
+|trade_profit_7_TEXT|If people answer "others, namely" to the question trade_profit.1, reason cited|text entry|
+|trade_p_benefit|How will the economic agreement affect the respondents personally.|1 = I will not be affected by this agreement, 2 = I will be able to buy cheaper goods in Poland, 3 = I will have a better conscious because goods produced in Indonesia will follow better environmental standards, 4 = I will have more job opportunities because Switzerland will export more to Indonesia, 5 = Others, namely|
+|trade_p_benefit_5_text|If people answer "others, namely" to the question trade_p_benefit, reason cited|text entry|
+|trade_goals.1|What respondents think the goal of Switzerland in terms of trade should be|1 = Geopolitics: The Polish government should aim to position the country strategically in the world, 2 = Efficiency: The Polish government should aim for the economy to become more efficient through trade so that Polish people can buy cheaper goods, 3 = Jobs: The Polish government should open up our economy to make sure there are enough jobs for Polish people., 4 = Fairness: The Polish government should make sure that such agreements are fair for all signing parties., 5 = Others, namely|
+|trade_goals_8_TEXT|If people answer "others, namely" to the question trade_goals.1, reason cited|text entry|
+|trade_resp|Who should take the decision to accept or reject the agreement?|1 = The European Union, 2 = the Polish government, 3 = the people of Poland|
+|ModuleE.Randomizedinformation_DO|Which treatment respondents were assigned for module E in Switzerland|text values: trade_treat_corr,  trade_treat_env , trade_treat_pop, trade_treat_rel|
+|ModuleEPL.Randomizedinformation_DO|Which treatment respondents were assigned for module E in Poland|text values: trade_treat_corr,  trade_treat_env , trade_treat_pop, trade_treat_rel|
+
+
+## Sociodemographics backend
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+| income | Monthly / yearly income of respondents (categories by country) | See section Variable with specific values and labels by country and subsection Income category |
+| subj_status | Self placement on the ladder of social status | Text entry - expected number between 1 and 10 |
+| status_mobility_ambi | Important to improve the social status | scale 0-10 where 0 = very unimportant and 10 = very important |
+
+## Module A
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+|ed_year|Year respondents finnished his education|Text entry|
+|educ_field_EN|Field of studies for English speaking respondents|Text entry with autofill|
+|educ_field_NL|Field of studies for Dutchspeaking respondents|Text entry with autofill|
+|educ_field_DE|Field of studies for German speaking respondents|Text entry with autofill|
+|educ_field_FR|Field of studies forFrench speaking respondents|Text entry with autofill|
+|educ_field_PL|Field of studies for Polish speaking respondents|Text entry with autofill|
+| time_spend_module_A1_First.Click | How many seconds until the first click on page (Module A1)| Number of seconds |
+| time_spend_module_A1_Last.Click | How many seconds until the last click on page (Module A1)| Number of seconds |
+| time_spend_module_A1_Page.Submit | How many seconds until the page is submitted (Module A1)| Number of seconds |
+| time_spend_module_A1_Click.Count | How many clicks until the page is submitted (Module A1)| Number of clicks |
+|cur_paid_empl|Whether respondents is currently employed|1 = Yes, 2 = No|
+|cur_job_name|The name of the current job|Text entry|
+|cur_job_content|Type of work that is done most of the time |Text entry|
+|cur_job_org|Organization where respondent work|Text entry|
+|cur_job_startyear|What year respondent started the current Job|Text entry|
+|cur_job_satisf_1|Feeling about the current job|0-10 scale where 0 = xtremely dissatisfied and 10 = extremely satisfied|
+|any_prev_empl|Whther respondent was previously employed|1 = Yes, 2 = No|
+|last_job_name|The name of the previous job||
+|last_job_content|Type of work that is done most of the time in the last job|Text entry|
+|last_job_org|Organization where respondent was working previously|Text entry|
+|last_job_starty|What year respondent started the last Job|Text entry|
+|last_job_endy|What year respondent ended the last Job|Text entry|
+| time_spend_module_A2_First.Click | How many seconds until the first click on page (Module A2)| Number of seconds |
+| time_spend_module_A2_Last.Click | How many seconds until the last click on page (Module A2)| Number of seconds |
+| time_spend_module_A2_Page.Submit | How many seconds until the page is submitted (Module A2)| Number of seconds |
+| time_spend_module_A2_Click.Count | How many clicks until the page is submitted (Module A2)| Number of clicks |
+|previous_job|Whether respondent had a previous job|1 = Yes, before I had a different job in the same organisation, 2 = Yes, before I worked for another organisation, 3 = No, my current job is the only job I have ever had so far|
+|major_job_where|Job where respondent worked most of the time|1 = I’ve worked the majority of my life in my ${e://Field/current_or_last} job at my ${e://Field/current_or_last} organisation, 2 = I’ve worked the majority of my life in a different job at my ${e://Field/current_or_last} organisation, 3 = I’ve worked the majority of my life for a different organisation, 4 = I've worked at a variety of organizations, all for roughly the same amount of time|
+|major_job_so_name|Name or title of previous job in the same organization|Text entry|
+|major_job_so_cont|What type of work in previous job in the same organisation|Text entry|
+|major_job_so_starty|Start of previous job in the same organization|Text entry|
+|major_job_so_endy|End of previous job in same organization|Text entry|
+|major_job_oo_name|Name or title of previous job|Text entry|
+|major_job_oo_cont|What type of work in previous job|Text entry|
+|major_job_oo_org|Name of organisation in which respondent previously worked. |Text entry|
+|major_job_oo_starty|Start of previous job|Text entry|
+|major_job_oo_endy|End of previous job|Text entry|
+|time_spend_module_A3|||
+| time_spend_module_A3_First.Click | How many seconds until the first click on page (Module A3)| Number of seconds |
+| time_spend_module_A3_Last.Click | How many seconds until the last click on page (Module A3)| Number of seconds |
+| time_spend_module_A3_Page.Submit | How many seconds until the page is submitted (Module A3)| Number of seconds |
+| time_spend_module_A3_Click.Count | How many clicks until the page is submitted (Module A3)| Number of clicks |
+|cur_act_for_party|Active in a political party|1 = Yes, I am currently active, 2 = Yes, I have been active in the past, 3 = No, I have never been active for a political party|
+|act_party_name|What party respondnt was/is a member|Text entry|
+|acti_act_party_raw|What type of activities was done with the aprty|Text entry|
+|curr_act_when|When respondents started to be active for the party|1 = as a teenager (age 13 - 19), 2 = as a young adult (age 20 - 30), 3 = as an adult (age 30 or up)|
+|prev_act_when|What periode respondent was mainly active in the party: |1 = as a teenager (age 13 - 19), 2 = as a young adult (age 20 - 30), 3 = as an adult (age 30 or up)|
+|act_ever_cons_1|Ever consider becomming a political party member|scale 0-10 where 0 = never considered and 10 = Consider very often|
+| time_spend_module_A4_First.Click | How many seconds until the first click on page (Module A4)| Number of seconds |
+| time_spend_module_A4_Last.Click | How many seconds until the last click on page (Module A4)| Number of seconds |
+| time_spend_module_A4_Page.Submit | How many seconds until the page is submitted (Module A4)| Number of seconds |
+| time_spend_module_A4_Click.Count | How many clicks until the page is submitted (Module A4)| Number of clicks |
+|ever_held_puboff|Every held public office|1 = Yes, what office, 2 = No|
+|ever_held_puboff_1_TEXT|Description of public office if respondent replied "Yes, what office" in question ever_held_puboff|Text entry|
+|ever_ran_puboff|Ever ran for public office|1 = Yes, what office, 2 = No|
+|ever_ran_puboff_1_TEXT|Description of public office if respondent replied "Yes, what office" in question ever_ran_puboff|Text entry|
+|ever_cons_puboff_1|Ever though about running for public office|scale 0-10 where 0 = never considered and 10 = Consider very often|
+|interest_pipel_prof|Interested in paid work for political parties|1 = Yes, I would be very interested, 2= Yes, I would be interested, 3 = Yes, I would be interested, but not more interested than I am in other work, 4 = No, I would not be interested|
+|running_factors_1|Consider running for public office if : "You had more free time?"|1 = Yes, 2 = Maybe, 3 = No|
+|running_factors_2|Consider running for public office if : "It was easier to combine with your day to day job?"|1 = Yes, 2 = Maybe, 3 = No|
+|running_factors_3|Consider running for public office if : "You had more impressive professional credentials?"|1 = Yes, 2 = Maybe, 3 = No|
+|running_factors_4|Consider running for public office if : "If your political party of interest would have a gender quota to help women succeed"|1 = Yes, 2 = Maybe, 3 = No|
+|running_factors_5|Consider running for public office if : "If a political party would exist that would better represent your political ideas?"|1 = Yes, 2 = Maybe, 3 = No|
+|attit_towa_running|Characterization of attituds towards running for public offices|1 = It is something I definitely would like to undertake in the future., 2 = It is something I might undertake if the opportunity presented itself., 3 = I would not rule it out forever, but I currently have no interest., 4 = It is something I would absolutely never do.|
+|attit_running_again|Characterization of attituds towards running again for public offices|1 = It is something I definitely would like to undertake in the future., 2 = It is something I might undertake if the opportunity presented itself., 3 = I would not rule it out forever, but I currently have no interest., 4 = It is something I would absolutely never do.|
+|reaso_not_run_again|Why respondent do not want to run again for public office|Text entry|
+
+
+## End of survey
+
+| Variable Name | Variable Description | Values and labels |
+| ---- | -------- | ------------ |
+| Comments | Respondents comments on the survey | Text entry |
+
+
+
+
+## Variable with specific values and labels by country
+
+In this section, the code for the variables that take different values in different countries are presented. This concern some specific about the respondent country - the region of residency, the income category, and the education category - and specificity of the party system for different variables - the party voted for in the last national election, whether the respondents is a member of a party, the closest party of the respondent and the respondents evaluation of the biggest leftist party.
+
+### Region of residency
+
+Variable name: region
+
+| Code | Region | Country | 
+| ---- | -------- | ------------ |
+|1|South East|United Kingdom|
+|4|London|United Kingdom|
+|5|North West|United Kingdom|
+|6|East of England|United Kingdom|
+|7|West Midlands|United Kingdom|
+|8|South West|United Kingdom|
+|9|Yorkshire and the Humber|United Kingdom|
+|10|East Midlands|United Kingdom|
+|11|North East|United Kingdom|
+|12|Wales|United Kingdom|
+|13|Scotland|United Kingdom|
+|14|Northern Ireland|United Kingdom|
+|15|Groningen|Netherlands|
+|16|Friesland|Netherlands|
+|17|Drenthe|Netherlands|
+|18|Overijssel|Netherlands|
+|19|Flevoland|Netherlands|
+|20|Gelderland|Netherlands|
+|21|Utrecht|Netherlands|
+|22|Noord-Holland|Netherlands|
+|23|Zuid-Holland|Netherlands|
+|24|Zeeland|Netherlands|
+|25|Noord-Brabant|Netherlands|
+|26|Limburg|Netherlands|
+|28|Baden-Würtemberg|Germany|
+|29|Bayern|Germany|
+|30|Berlin|Germany|
+|31|Brandenburg|Germany|
+|32|Bremen|Germany|
+|33|Hamburg|Germany|
+|34|Hessen|Germany|
+|35|Mecklenburg-Vorpommern|Germany|
+|36|Niedersachsen|Germany|
+|37|Nordrhein-Westfalen|Germany|
+|38|Rheinland-Pfalz|Germany|
+|39|Saarland|Germany|
+|40|Sachsen|Germany|
+|41|Sachsen-Anhalt|Germany|
+|42|Schleswig-Holstein|Germany|
+|43|Thüringen|Germany|
+|44|Aargau|Switzerland|
+|45|Appenzell Ausserrhoden|Switzerland|
+|46|Appenzell Innerrhoden|Switzerland|
+|47|Basel-Landschaft|Switzerland|
+|48|Basel-Stadt|Switzerland|
+|49|Bern/Berne|Switzerland|
+|50|Freiburg/Fribourg|Switzerland|
+|51|Genève|Switzerland|
+|52|Glarus|Switzerland|
+|53|Graubünden/Grisons|Switzerland|
+|54|Jura|Switzerland|
+|55|Luzern|Switzerland|
+|56|Neuchâtel|Switzerland|
+|57|Obwalden|Switzerland|
+|58|Nidwalden|Switzerland|
+|59|St.Gallen|Switzerland|
+|60|Schaffhausen|Switzerland|
+|61|Schwyz|Switzerland|
+|62|Solothurn|Switzerland|
+|63|Thurgau|Switzerland|
+|64|Ticino|Switzerland|
+|65|Uri|Switzerland|
+|66|Wallis/Valais|Switzerland|
+|67|Vaud|Switzerland|
+|68|Zug|Switzerland|
+|69|Zürich|Switzerland|
+|74|Auvergne-Rhône-Alpes|France|
+|75|Bourgogne-Franche-Comté|France|
+|76|Bretagne|France|
+|77|Centre-Val de Loire|France|
+|78|Corse|France|
+|79|Grand Est|France|
+|80|Hauts-de-France|France|
+|81|Île-de-France|France|
+|82|Normandie|France|
+|83|Nouvelle-Aquitaine|France|
+|84|Occitanie|France|
+|85|Pays de la Loire|France|
+|86|Provence-Alpes-Côte d'Azur|France|
+|87|Guadeloupe|France|
+|88|Guyane|France|
+|89|La Réunion|France|
+|90|Martinique|France|
+|91|Mayotte|France|
+|92|Województwo Dolnośląskie|Poland|
+|93|Województwo Kujawsko-pomorskie|Poland|
+|94|Województwo Lubelskie|Poland|
+|95|Województwo Lubuskie|Poland|
+|96|Województwo Łódzkie|Poland|
+|98|Województwo Małopolskie|Poland|
+|97|Województwo Mazowieckie|Poland|
+|99|Województwo Opolskie|Poland|
+|101|Województwo Podkarpackie|Poland|
+|100|Województwo Podlaskie|Poland|
+|107|Województwo Pomorskie|Poland|
+|102|Województwo Śląskie|Poland|
+|103|Województwo Świętokrzyskie|Poland|
+|104|Województwo Warmińsko-mazurskie|Poland|
+|105|Województwo Wielkopolskie|Poland|
+|106|Województwo Zachodniopomorskie|Poland|
+|108|Antwerpen|Belgium|
+|109|Brussel-Hoofdstad|Belgium|
+|110|Henegouwen|Belgium|
+|111|Limburg|Belgium|
+|112|Luik|Belgium|
+|113|Luxemburg|Belgium|
+|114|Namen|Belgium|
+|115|Oost-Vlaanderen|Belgium|
+|116|Vlaams-Brabant|Belgium|
+|117|Waals-Brabant|Belgium|
+|118|West-Vlaanderen|Belgium|
+|119|Anvers|Belgium|
+|120|Bruxelles-Capitale|Belgium|
+|121|Hainaut|Belgium|
+|122|Limbourg|Belgium|
+|123|Liège|Belgium|
+|124|Luxembourg|Belgium|
+|125|Namur|Belgium|
+|126|Flandre orientale|Belgium|
+|127|Brabant flamand|Belgium|
+|128|Brabant wallon|Belgium|
+|129|Flandre occidentale|Belgium|
+|73|prefer not to say|All countries.|
+
+### Highest education achieved
+
+Variable name: highest_ed
+
+| Code | Level of education | Country | 
+| ---- | -------- | ------------ |
+|1|Grundschule|Germany|
+|2|Volks-/Hauptschulabschluss oder Polytechnische Oberschule mit Abschluss 8./9. Klasse|Germany|
+|3|Mittlere Reife/Fachoberschulreife/Mittlerer Abschlusss/Qualifizierter Sekundarabschluss I/Qualifizierter Hauptschulabschluss oder äquivalenter Abschluss 10. Klasse|Germany|
+|4|Abgeschlossene Lehre/beruflicher Abschluss ohne Fachschul- oder Fachhochschulabschluss|Germany|
+|5|Fachhochschulreife/fachgebundene Hochschulreife/Fachabitur|Germany|
+|6|Allgemeine Hochschulreife/Abitur|Germany|
+|7|Abschluss einer Fachschule oder Berufsakademie (z.B. staatlich geprüfter Gestalter/Techniker/Betriebswirt/Meister)|Germany|
+|8|Universität/Fachhochschule/Kunsthochschule Musikhochschule (Diplom, Staatsexamen, Bachelor, Master oder Magister, Promotion)|Germany|
+|9|Obligatorische Schulzeit (9. Klasse)|Switzerland|
+|11|Sekundarstufe II / Gymnasium (Matura)|Switzerland|
+|12|Berufliche / Technische Ausbildung (EBA, EFZ)|Switzerland|
+|13|Berufsakademie / Höhere berufliche Bildung (Eidgenössischer Fachausweis)|Switzerland|
+|14|Universität / Höhere Bildung (Bachelor)|Switzerland|
+|15|Aufbaustudium – Magister, MB Magister, Master|Switzerland|
+|16|Aufbaustudium – Doktortitel (Dr.)|Switzerland|
+|17|École obligatoire|Switzerland|
+|19|Enseignement secondaire, deuxième cycle / Lycée (Maturité)|Switzerland|
+|20|Enseignement professionnel et technologique (AFP, CFC)|Switzerland|
+|21|Formation professionnelle supérieure (Brevet Fédéral)|Switzerland|
+|22|Ensignement supérieur / Université, premier cycle (Bachelor)|Switzerland|
+|23|Enseignement supérieur, deuxième cycle – Master, MBA|Switzerland|
+|24|Enseignement supérieur, troisième cycle – Doctorat|Switzerland|
+|26|École Élémentaire|France|
+|27|Collège (Brevet)|France|
+|29|Baccalauréat|France|
+|30|Bac +2 (BTS, DEUG, DUT)|France|
+|31|Bac +3/+4 (Licence, Maîtrise, Master 1)|France|
+|32|Bac +5 et plus (Grandes Écoles, DESS, DEA, Doctorat, Master 2)|France|
+|33|No school education|United Kingdom|
+|34|Primary school|United Kingdom|
+|35|Secondary school O-levels, GCSE, SCE or equivalent|United Kingdom|
+|36|A-levels, Scottish Highers, Welsh Advanced Baccalaureate, Northern Ireland Senior Certificate, or equivalent|United Kingdom|
+|37|HE Diploma|United Kingdom|
+|38|Further education certifications, such as Nursing Certificate, Teacher training or similar|United Kingdom|
+|39|University-level education|United Kingdom|
+|40|Basisschool t/m groep 8|Netherlands|
+|41|VMBO-b/k of MBO1 of Middenstandsdiploma of LBO, VBO, LEAO, Ambachtschool, NHS, LHNO|Netherlands|
+|42|VMBO-g/t of HAVO-, VWO-onderbouw of MAVO / (M)ULO / Middenstandsdiploma / VGLO|Netherlands|
+|43|MBO2 en MBO3 of praktijkdipoma of MEAO / MTS|Netherlands|
+|44|MBO4 of MBO-plus voor havsiten|Netherlands|
+|45|HAVO, VWO|Netherlands|
+|46|HBO-, WO-bachelor|Netherlands|
+|47|HBO-, WO-master|Netherlands|
+|48|WO promotie / doctoraat|Netherlands|
+|50|Primaire (ou sans diplôme)|Belgium|
+|51|Enseignement secondaire inférieur|Belgium|
+|52|Enseignement secondaire supérieur|Belgium|
+|53|Postsecondair non supérieur|Belgium|
+|54|Brevet d’enseignement supérieur (BES) / Hoger beroepsonderwijs (HBO5)|Belgium|
+|55|Supérieur non universitaire de type court / bachelier professionnalisant / bachelier académique (haute école ou université) / formation complémentaires, post-bachelor|Belgium|
+|56|Enseignement supérieur non universitaire de type long  - enseignement universitaire (master, licence, ingénieur, docteur en médecine) /  formation complémentaires, post-master|Belgium|
+|57|Doctorat|Belgium|
+|58|Lager onderwijs (of geen diploma)|Belgium|
+|59|Lager secundair onderwijs|Belgium|
+|60|Hoger secundair onderwijs|Belgium|
+|61|Post-secundair niet-hoger onderwijs|Belgium|
+|62|Hoger beroepsonderwijs (HBO5 )/ Brevet d’enseignement supérieur (BES)|Belgium|
+|63|Hoger niet-universitair onderwijs van het korte type / professionele bachelor / academische bachelor (hogeschool of universiteit) / Voortgezette opleiding, Banaba|Belgium|
+|64|Hoger niet-universitair onderwijs van het lange type - universitair onderwijs (master, licentiaat, ingenieur, dokter in de geneeskunde) / Voortgezette opleiding, Manama|Belgium|
+|65|Doctoraat|Belgium|
+|67|szkoła podstawowa|Poland|
+|68|gimnazjum|Poland|
+|69|liceum ogólnokształcące, liceum profilowane, technikum, uzupeł-niające liceum ogólnokształcące, technikum uzupełniające, zasadnicza szkoła zawodowa|Poland|
+|70|szkoły policealne|Poland|
+|71|wyższe studia licencjackie, studia magisterskie, studia uzupełniają-ce magisterskie, studia podyplomowe|Poland|
+|72|studia doktoranckie|Poland|
+
+
+### Income category
+
+Variable name: income
+
+| Code | Revenu (montly or annual)| Country | 
+| ---- | -------- | ------------ |
+|1|0-2'800 CHF|Switzerland|
+|2|2'801-4'100 CHF|Switzerland|
+|3|4'101-5'200 CHF|Switzerland|
+|4|5'201-6'300 CHF|Switzerland|
+|5|6'301-7'500 CHF|Switzerland|
+|6|7'501-8'800 CHF|Switzerland|
+|7|8'801-10'400 CHF|Switzerland|
+|8|10'401-12'300 CHF|Switzerland|
+|9|12'301-15'800 CHF|Switzerland|
+|10|15'801 CHF und mehr / et plus|Switzerland|
+|11|0-1'100 Euro|Germany|
+|12|1'101-1'400 Euro|Germany|
+|13|1'401-1'800 Euro|Germany|
+|14|1'801-2'100 Euro|Germany|
+|15|2'101-2'500 Euro|Germany|
+|16|2'501-3'000 Euro|Germany|
+|17|3'001-3'500 Euro|Germany|
+|18|3'501-4'100 Euro|Germany|
+|19|4'101-5'300 Euro|Germany|
+|20|5'301 Euro und mehr|Germany|
+|21|0-13'000 Euro|Netherlands|
+|22|13'001-17'000 Euro|Netherlands|
+|23|17'001-21'000 Euro|Netherlands|
+|24|21'001-25'000 Euro|Netherlands|
+|25|25'001-29'000 Euro|Netherlands|
+|26|29'001-34'000 Euro|Netherlands|
+|27|34'001-40'000 Euro|Netherlands|
+|28|40'001-48'000 Euro|Netherlands|
+|29|48'001-60'000 Euro|Netherlands|
+|30|60'000 Euro and more|Netherlands|
+|31|0-14'000 Euro|France|
+|32|14'001-17'000 Euro|France|
+|33|17'001-21'000 Euro|France|
+|34|21'001-25'000 Euro|France|
+|35|25'001-30'000 Euro|France|
+|36|30'001-35'000 Euro|France|
+|37|35'001-42'000 Euro|France|
+|38|42'000-50'000 Euro|France|
+|39|50'001-65'000 Euro|France|
+|40|65'001 et plus|France|
+|41|0-1099 Euro|Belgium|
+|42|1100-1399 Euro|Belgium|
+|43|1400-1699 Euro|Belgium|
+|44|1700-2099 Euro|Belgium|
+|45|2100-2499 Euro|Belgium|
+|46|2500-3099 Euro|Belgium|
+|47|3100-3699 Euro|Belgium|
+|48|3700-4499 Euro|Belgium|
+|49|4500-5599 Euro|Belgium|
+|50|5600 Euro et plus|Belgium|
+|51|0-10'999 pounds|United Kingdom|
+|52|11'000-14'999 pounds|United Kingdom|
+|53|15'000-18'999 pounds|United Kingdom|
+|54|19'000-22'999 pounds|United Kingdom|
+|55|23'000-26'999 pounds|United Kingdom|
+|56|27'000-32'999 pounds|United Kingdom|
+|57|33'000-38'999 pounds|United Kingdom|
+|58|39'000-47'999 pounds|United Kingdom|
+|59|48'000-62'999 pounds|United Kingdom|
+|60|63'000 pounds and over|United Kingdom|
+|61|1700 pln zł albo mniej|Poland|
+|62|1700 pln zł - 2300 pln zł|Poland|
+|63|2301 pln zł - 3000 pln zł|Poland|
+|64|3001 pln zł - 3600 pln zł|Poland|
+|65|3601 pln zł - 4300 pln zł|Poland|
+|66|4301 pln zł - 5000 pln zł|Poland|
+|67|5001 pln zł - 5900 pln zł|Poland|
+|68|5901 pln zł - 7000 pln zł|Poland|
+|69|7001 pln zł - 8800 pln zł|Poland|
+|70|więcej niż 8801 pln zł|Poland|
+
+
+### Party vote in the last national election
+
+
+Variable name: party_vote
+
+
+| Code | Party | Country | 
+| ---- | -------- | ------------ |
+|1|Conservatives|United Kingdom|
+|2|Labour|United Kingdom|
+|3|Scottish National Party|United Kingdom|
+|4|Liberal Democrats|United Kingdom|
+|8|Democratic Unionist Party|United Kingdom|
+|9|Sinn Féin|United Kingdom|
+|10|Plaid Cymru|United Kingdom|
+|11|Social Democratic & Labour Party|United Kingdom|
+|12|Green Party|United Kingdom|
+|13|Alliance|United Kingdom|
+|14|Volkspartij voor Vrijheid en Democratie (VVD)|Netherlands|
+|15|Partij voor de Vrijheid (PVV)|Netherlands|
+|16|Christen-Democratisch-Appel (CDA)|Netherlands|
+|17|Democraten 66 (D66)|Netherlands|
+|18|GroenLinks|Netherlands|
+|19|Socialistische Partij (SP)|Netherlands|
+|20|Partij van de Arbeid (PvdA)|Netherlands|
+|21|ChristenUnie|Netherlands|
+|22|Partij voor de Dieren|Netherlands|
+|23|Staatkundig Gereformeerde Partij (SGP)|Netherlands|
+|24|DENK|Netherlands|
+|25|50PLUS|Netherlands|
+|26|Forum voor Democratie|Netherlands|
+|28|Christlich Demokratische Union Deutschlands/Christlich-Soziale Union Deutschlands|Germany|
+|29|Sozialdemokratische Partei Deutschland|Germany|
+|30|Alternative für Deutschland|Germany|
+|31|Freie Demokratische Partei|Germany|
+|32|Die Linke|Germany|
+|33|BÜNDNIS90/DIE GRÜNEN|Germany|
+|34|Schweizerische Volkspartei/Union démocratique du centre|Switzerland|
+|35|Sozialdemokratische Partei/Parti socialiste suisse|Switzerland|
+|36|FDP.Die Liberalen/PLR.Les Libéraux-Radicaux|Switzerland|
+|37|Grüne Partei der Schweiz/Les verts – Parti écologiste suisse|Switzerland|
+|38|Christlichdemokratische Volkspartei/Parti Démocrate-Chrétien|Switzerland|
+|39|grünliberale Partei/Parti vert'libéral|Switzerland|
+|40|Evangelische Volkspartei/Parti évangelique suisse|Switzerland|
+|41|Bürgerlich-demokratische Partei/Parti bourgeois démocratique suisse|Switzerland|
+|42|Eidgenössische Demokratische Union/Union Démocratique Fédérale|Switzerland|
+|43|Partei der Arbeit/Parti Suisse du Travail - Parti Ouvrier et Populaire|Switzerland|
+|44|SolidaritéS|Switzerland|
+|45|Lega dei Ticinesi|Switzerland|
+|48|La République en marche (LREM)|France|
+|49|Les Républicains|France|
+|69|Rassemble National (RN)|France|
+|50|Mouvement démocrate (ME)|France|
+|51|Parti socialiste (PS)|France|
+|52|Union des démocrates et indépendants (UI)|France|
+|53|Écologie Democratie Solidarité (EDS)|France|
+|54|La France insoumise (FI)|France|
+|55|Mouvement radical (MR)|France|
+|56|Parti communiste français (PCF)|France|
+|57|Agir, la droite constructive (AE)|France|
+|58|Citoyenneté, action, participation pour le xxie  siècle (Cap21)|France|
+|59|Parti écologiste (PÉ)|France|
+|60|Pè a Corsica|France|
+|61|Alliance centriste (AC)|France|
+|62|Les Centristes (LC)|France|
+|63|Ensemble!|France|
+|64|Mouvement des progressistes (MDP)|France|
+|65|Parti progressiste martiniquais (MPP)|France|
+|66|Parti socialiste guyanais (PSG)|France|
+|67|Tavini Huiraatira (Tavini)|France|
+|70|Prawo i Sprawiedliwość|Poland|
+|71|Platforma Obywatelska|Poland|
+|72|Sojusz Lewicy Demokratycznej|Poland|
+|73|Polskie Stronnictwo Ludowe|Poland|
+|74|Solidarna Polska|Poland|
+|75|Wiosna|Poland|
+|76|Porozumienie|Poland|
+|77|Nowoczesna|Poland|
+|78|Kukiz'15|Poland|
+|79|Lewica Razem|Poland|
+|80|Koalicja Odnowy Rzeczypospolitej Wolność i Nadzieja|Poland|
+|81|Ruch Narodowy|Poland|
+|82|Inicjatywa Polska|Poland|
+|83|Partia Zieloni|Poland|
+|84|Unia Europejskich Demokratów|Poland|
+|85|Konfederacja Korony Polskiej|Poland|
+|86|Komitet Wyborczy Mniejszość Niemiecka|Poland|
+|87|Polska 2050|Poland|
+|89|Nieuwe-Vlaamse Alliantie (NV-A)|Belgium|
+|90|Vlaams Belang (VB)|Belgium|
+|91|Parti Socialiste (PS)|Belgium|
+|92|Christen-Democratisch en Vlaams - (CD&V)|Belgium|
+|93|Partij van de Arbeid van België / Parti du Travail de Belgique (PVDA/PTB)|Belgium|
+|94|Open Vlaamse Liberalen en Democraten (Open Vld)|Belgium|
+|95|Mouvement Réformateur (MR)|Belgium|
+|96|Socialistische Partij Anders (sp.a)|Belgium|
+|97|Ecolo|Belgium|
+|98|Groen|Belgium|
+|99|Centre démocrate humaniste (cdH)|Belgium|
+|27,46,104|Others, namely:|all countried. Summarized in variable party_vote_text|
+
+
+### Party membership of respondents
+
+Variable name: which_member
+
+
+| Code | Party | Country | 
+| ---- | -------- | ------------ |
+|1|Conservatives|United Kingdom|
+|2|Labour|United Kingdom|
+|3|Scottish National Party|United Kingdom|
+|4|Liberal Democrats|United Kingdom|
+|8|Democratic Unionist Party|United Kingdom|
+|9|Sinn Féin|United Kingdom|
+|10|Plaid Cymru|United Kingdom|
+|11|Social Democratic & Labour Party|United Kingdom|
+|12|Green Party|United Kingdom|
+|13|Alliance|United Kingdom|
+|14|Volkspartij voor Vrijheid en Democratie (VVD)|Netherlands|
+|15|Partij voor de Vrijheid (PVV)|Netherlands|
+|16|Christen-Democratisch-Appel (CDA)|Netherlands|
+|17|Democraten 66 (D66)|Netherlands|
+|18|GroenLinks|Netherlands|
+|19|Socialistische Partij (SP)|Netherlands|
+|20|Partij van de Arbeid (PvdA)|Netherlands|
+|21|ChristenUnie|Netherlands|
+|22|Partij voor de Dieren|Netherlands|
+|23|Staatkundig Gereformeerde Partij (SGP)|Netherlands|
+|24|DENK|Netherlands|
+|25|50PLUS|Netherlands|
+|26|Forum voor Democratie|Netherlands|
+|28|Christlich Demokratische Union Deutschlands/Christlich-Soziale Union Deutschlands|Germany|
+|29|Sozialdemokratische Partei Deutschland|Germany|
+|30|Alternative für Deutschland|Germany|
+|31|Freie Demokratische Partei|Germany|
+|32|Die Linke|Germany|
+|33|BÜNDNIS90/DIE GRÜNEN|Germany|
+|34|Schweizerische Volkspartei/Union démocratique du centre|Switzerland|
+|35|Sozialdemokratische Partei/Parti socialiste suisse|Switzerland|
+|36|FDP.Die Liberalen/PLR.Les Libéraux-Radicaux|Switzerland|
+|37|Grüne Partei der Schweiz/Les verts – Parti écologiste suisse|Switzerland|
+|38|Christlichdemokratische Volkspartei/Parti Démocrate-Chrétien|Switzerland|
+|39|grünliberale Partei/Parti vert'libéral|Switzerland|
+|40|Evangelische Volkspartei/Parti évangelique suisse|Switzerland|
+|41|Bürgerlich-demokratische Partei/Parti bourgeois démocratique suisse|Switzerland|
+|42|Eidgenössische Demokratische Union/Union Démocratique Fédérale|Switzerland|
+|43|Partei der Arbeit/Parti Suisse du Travail - Parti Ouvrier et Populaire|Switzerland|
+|44|SolidaritéS|Switzerland|
+|45|Lega dei Ticinesi|Switzerland|
+|48|La République en marche (LREM)|France|
+|49|Les Républicains|France|
+|69|Rassemble National (RN)|France|
+|50|Mouvement démocrate (ME)|France|
+|51|Parti socialiste (PS)|France|
+|52|Union des démocrates et indépendants (UI)|France|
+|53|Écologie Democratie Solidarité (EDS)|France|
+|54|La France insoumise (FI)|France|
+|55|Mouvement radical (MR)|France|
+|56|Parti communiste français (PCF)|France|
+|57|Agir, la droite constructive (AE)|France|
+|58|Citoyenneté, action, participation pour le xxie  siècle (Cap21)|France|
+|59|Parti écologiste (PÉ)|France|
+|60|Pè a Corsica|France|
+|61|Alliance centriste (AC)|France|
+|62|Les Centristes (LC)|France|
+|63|Ensemble!|France|
+|64|Mouvement des progressistes (MDP)|France|
+|65|Parti progressiste martiniquais (MPP)|France|
+|66|Parti socialiste guyanais (PSG)|France|
+|67|Tavini Huiraatira (Tavini)|France|
+|70|Prawo i Sprawiedliwość|Poland|
+|71|Platforma Obywatelska|Poland|
+|72|Sojusz Lewicy Demokratycznej|Poland|
+|73|Polskie Stronnictwo Ludowe|Poland|
+|74|Solidarna Polska|Poland|
+|75|Wiosna|Poland|
+|76|Porozumienie|Poland|
+|77|Nowoczesna|Poland|
+|78|Kukiz'15|Poland|
+|79|Lewica Razem|Poland|
+|80|Koalicja Odnowy Rzeczypospolitej Wolność i Nadzieja|Poland|
+|81|Ruch Narodowy|Poland|
+|82|Inicjatywa Polska|Poland|
+|83|Partia Zieloni|Poland|
+|84|Unia Europejskich Demokratów|Poland|
+|85|Konfederacja Korony Polskiej|Poland|
+|86|Komitet Wyborczy Mniejszość Niemiecka|Poland|
+|87|Polska 2050|Poland|
+|89|Nieuwe-Vlaamse Alliantie (NV-A)|Belgium|
+|90|Vlaams Belang (VB)|Belgium|
+|91|Parti Socialiste (PS)|Belgium|
+|92|Christen-Democratisch en Vlaams - (CD&V)|Belgium|
+|93|Partij van de Arbeid van België / Parti du Travail de Belgique (PVDA/PTB)|Belgium|
+|94|Open Vlaamse Liberalen en Democraten (Open Vld)|Belgium|
+|95|Mouvement Réformateur (MR)|Belgium|
+|96|Socialistische Partij Anders (sp.a)|Belgium|
+|97|Ecolo|Belgium|
+|98|Groen|Belgium|
+|99|Centre démocrate humaniste (cdH)|Belgium|
+|100|Démocrate Fédéraliste Indépendant (DeFI)|Belgium|
+|27, 46, 47|Others, namely:|All countries. Values summarized in variable which_member_text|
+
+
+### Closest party
+
+Variable name: which_cl_party
+
+| Code | Party | Country | 
+| ---- | -------- | ------------ |
+|1|Conservatives|United Kingdom|
+|2|Labour|United Kingdom|
+|3|Scottish National Party|United Kingdom|
+|4|Liberal Democrats|United Kingdom|
+|8|Democratic Unionist Party|United Kingdom|
+|9|Sinn Féin|United Kingdom|
+|10|Plaid Cymru|United Kingdom|
+|11|Social Democratic & Labour Party|United Kingdom|
+|12|Green Party|United Kingdom|
+|13|Alliance|United Kingdom|
+|14|Volkspartij voor Vrijheid en Democratie (VVD)|Netherlands|
+|15|Partij voor de Vrijheid (PVV)|Netherlands|
+|16|Christen-Democratisch-Appel (CDA)|Netherlands|
+|17|Democraten 66 (D66)|Netherlands|
+|18|GroenLinks|Netherlands|
+|19|Socialistische Partij (SP)|Netherlands|
+|20|Partij van de Arbeid (PvdA)|Netherlands|
+|21|ChristenUnie|Netherlands|
+|22|Partij voor de Dieren|Netherlands|
+|23|Staatkundig Gereformeerde Partij (SGP)|Netherlands|
+|24|DENK|Netherlands|
+|25|50PLUS|Netherlands|
+|26|Forum voor Democratie|Netherlands|
+|28|Christlich Demokratische Union Deutschlands/Christlich-Soziale Union Deutschlands|Germany|
+|29|Sozialdemokratische Partei Deutschland|Germany|
+|30|Alternative für Deutschland|Germany|
+|31|Freie Demokratische Partei|Germany|
+|32|Die Linke|Germany|
+|33|BÜNDNIS90/DIE GRÜNEN|Germany|
+|34|Schweizerische Volkspartei/Union démocratique du centre|Switzerland|
+|35|Sozialdemokratische Partei/Parti socialiste suisse|Switzerland|
+|36|FDP.Die Liberalen/PLR.Les Libéraux-Radicaux|Switzerland|
+|37|Grüne Partei der Schweiz/Les verts – Parti écologiste suisse|Switzerland|
+|38|Die Mitte / Le Centre|Switzerland|
+|39|grünliberale Partei/Parti vert'libéral|Switzerland|
+|40|Evangelische Volkspartei/Parti évangelique suisse|Switzerland|
+|42|Eidgenössische Demokratische Union/Union Démocratique Fédérale|Switzerland|
+|43|Partei der Arbeit/Parti Suisse du Travail - Parti Ouvrier et Populaire|Switzerland|
+|44|SolidaritéS|Switzerland|
+|45|Lega dei Ticinesi|Switzerland|
+|48|La République en marche (LREM)|France|
+|49|Les Républicains|France|
+|68|Rassemblement National (RN)|France|
+|50|Mouvement démocrate (ME)|France|
+|51|Parti socialiste (PS)|France|
+|52|Union des démocrates et indépendants (UI)|France|
+|53|Écologie Democratie Solidarité (EDS)|France|
+|54|La France insoumise (FI)|France|
+|55|Mouvement radical (MR)|France|
+|56|Parti communiste français (PCF - 12)|France|
+|57|Agir, la droite constructive (AE - 9)|France|
+|58|Citoyenneté, action, participation pour le xxie  siècle (Cap21)|France|
+|59|Parti écologiste (PÉ)|France|
+|60|Pè a Corsica|France|
+|61|Alliance centriste (AC)|France|
+|62|Les Centristes (LC)|France|
+|63|Ensemble!|France|
+|64|Mouvement des progressistes (MDP)|France|
+|65|Parti progressiste martiniquais (MPP)|France|
+|66|Parti socialiste guyanais (PSG)|France|
+|67|Tavini Huiraatira (Tavini)|France|
+|69|Prawo i Sprawiedliwość|Poland|
+|70|Platforma Obywatelska|Poland|
+|71|Sojusz Lewicy Demokratycznej|Poland|
+|72|Polskie Stronnictwo Ludowe|Poland|
+|73|Solidarna Polska|Poland|
+|74|Wiosna|Poland|
+|75|Porozumienie|Poland|
+|76|Nowoczesna|Poland|
+|77|Kukiz'15|Poland|
+|78|Lewica Razem|Poland|
+|79|Koalicja Odnowy Rzeczypospolitej Wolność i Nadzieja|Poland|
+|80|Ruch Narodowy|Poland|
+|81|Inicjatywa Polska|Poland|
+|82|Partia Zieloni|Poland|
+|83|Unia Europejskich Demokratów|Poland|
+|84|Konfederacja Korony Polskiej|Poland|
+|85|Komitet Wyborczy Mniejszość Niemiecka|Poland|
+|86|Polska 2050|Poland|
+|87|Nieuwe-Vlaamse Alliantie (NV-A)|Belgium|
+|88|Vlaams Belang (VB)|Belgium|
+|89|Parti Socialiste (PS)|Belgium|
+|90|Christen-Democratisch en Vlaams - (CD&V)|Belgium|
+|91|Partij van de Arbeid van België / Parti du Travail de Belgique (PVDA/PTB)|Belgium|
+|92|Open Vlaamse Liberalen en Democraten (Open Vld)|Belgium|
+|93|Mouvement Réformateur (MR)|Belgium|
+|94|Socialistische Partij Anders (sp.a)|Belgium|
+|95|Ecolo|Belgium|
+|96|Groen|Belgium|
+|97|Centre démocrate humaniste (cdH)|Belgium|
+|98|Démocrate Fédéraliste Indépendant (DeFI)|Belgium|
+|27, 46, 47|Others, namely:|All countries. Values summarized in variable which_cl_party_text|
+
+
+### Biggest party on the left
+
+Variable name: l_party_guess
+
+| Code | Party | Country | 
+| ---- | -------- | ------------ |
+|1|Conservatives|United Kingdom|
+|2|Labour|United Kingdom|
+|3|Scottish National Party|United Kingdom|
+|4|Liberal Democrat|United Kingdom|
+|8|Democratic Unionist Party|United Kingdom|
+|9|Sinn Féin|United Kingdom|
+|10|Plaid Cymru|United Kingdom|
+|11|Social Democratic & Labour Party|United Kingdom|
+|12|Green Party|United Kingdom|
+|13|Alliance|United Kingdom|
+|14|Volkspartij voor Vrijheid en Democratie|Netherlands|
+|15|Partij voor de Vrijheid|Netherlands|
+|16|Christen-Democratisch-Appel|Netherlands|
+|17|Democraten 66|Netherlands|
+|18|GroenLinks|Netherlands|
+|19|Socialistische Partij|Netherlands|
+|20|Partij van de Arbeid|Netherlands|
+|21|ChristenUnie|Netherlands|
+|22|Partij voor de Dieren|Netherlands|
+|23|Staatkundig Gereformeerde Partij|Netherlands|
+|24|DENK|Netherlands|
+|25|50PLUS|Netherlands|
+|26|Forum voor Democratie|Netherlands|
+|28|Christlich Demokratische Union Deutschlands/Christlich-Soziale Union Deutschlands|Germany|
+|29|Sozialdemokratische Partei Deutschland|Germany|
+|30|Alternative für Deutschland|Germany|
+|31|Freie Demokratische Partei|Germany|
+|32|Die Linke|Germany|
+|33|BÜNDNIS90/DIE GRÜNEN|Germany|
+|34|Schweizerische Volkspartei/Union démocratique du centre|Switzerland|
+|35|Sozialdemokratische Partei/Parti socialiste suisse|Switzerland|
+|36|FDP.Die Liberalen/PLR.Les Libéraux-Radicaux|Switzerland|
+|37|Grüne Partei der Schweiz/Les verts – Parti écologiste suisse|Switzerland|
+|39|Die Mitte / Le Centre|Switzerland|
+|40|grünliberale Partei/Parti vert'libéral|Switzerland|
+|41|Evangelische Volkspartei/Parti évangelique suisse|Switzerland|
+|42|Eidgenössische Demokratische Union/Union Démocratique Fédérale|Switzerland|
+|43|Partei der Arbeit/Parti Suisse du Travail - Parti Ouvrier et Populaire|Switzerland|
+|44|SolidaritéS|Switzerland|
+|45|Lega dei Ticinesi|Switzerland|
+|47|La République en marche (LREM)|France|
+|48|Les Républicains|France|
+|67|Rassemblement National (RN)|France|
+|49|Mouvement démocrate (ME)|France|
+|50|Parti socialiste (PS)|France|
+|51|Union des démocrates et indépendants (UI)|France|
+|52|Écologie Democratie Solidarité (EDS)|France|
+|53|La France insoumise (FI)|France|
+|54|Mouvement radical (MR)|France|
+|55|Parti communiste français (PCF)|France|
+|56|Agir, la droite constructive (AE)|France|
+|57|Citoyenneté, action, participation pour le xxie  siècle (Cap21)|France|
+|58|Parti écologiste (PÉ)|France|
+|59|Pè a Corsica|France|
+|60|Alliance centriste (AC)|France|
+|61|Les Centristes (LC)|France|
+|62|Ensemble!|France|
+|63|Mouvement des progressistes (MDP)|France|
+|64|Parti progressiste martiniquais (MPP)|France|
+|65|Parti socialiste guyanais (PSG)|France|
+|66|Tavini Huiraatira (Tavini)|France|
+|68|Nieuwe-Vlaamse Alliantie (NV-A)|Belgium|
+|69|Vlaams Belang (VB)|Belgium|
+|70|Parti Socialiste (PS)|Belgium|
+|71|Christen-Democratisch en Vlaams - (CD&V)|Belgium|
+|72|Partij van de Arbeid van België / Parti du Travail de Belgique (PVDA/PTB)|Belgium|
+|73|Open Vlaamse Liberalen en Democraten (Open Vld)|Belgium|
+|74|Mouvement Réformateur (MR)|Belgium|
+|75|Socialistische Partij Anders (sp.a)|Belgium|
+|76|Ecolo|Belgium|
+|77|Groen|Belgium|
+|78|Centre démocrate humaniste (cdH)|Belgium|
+|79|Démocrate Fédéraliste Indépendant (DeFI)|Belgium|
+|80|Prawo i Sprawiedliwość|Poland|
+|81|Platforma Obywatelska|Poland|
+|82|Sojusz Lewicy Demokratycznej|Poland|
+|83|Polskie Stronnictwo Ludowe|Poland|
+|84|Solidarna Polska|Poland|
+|85|Wiosna|Poland|
+|86|Porozumienie|Poland|
+|87|Nowoczesna|Poland|
+|88|Kukiz'15|Poland|
+|89|Lewica Razem|Poland|
+|90|Koalicja Odnowy Rzeczypospolitej Wolność i Nadzieja|Poland|
+|91|Ruch Narodowy|Poland|
+|92|Inicjatywa Polska|Poland|
+|93|Partia Zieloni|Poland|
+|94|Unia Europejskich Demokratów|Poland|
+|95|Konfederacja Korony Polskiej|Poland|
+|96|Komitet Wyborczy Mniejszość Niemiecka|Poland|
+|97|Polska 2050|Poland|
+|27|Other, namely|All countries. Summarize in variable l_party_guess_27_TEXT|
+
+
+## Additional global variables
+
+| Variable Name | Variable Description |
+| ---- | ------------ |
+|Q_Language|Language of respondent|
+|m|Id of respondent (for bilendi)|
+|last_name_1|Last name of politician (for experiment)|
+|last_name_2|Last name of politician (for experiment)|
+|last_name_3|Last name of politician (for experiment)|
+|last_name_4|Last name of politician (for experiment)|
+|last_name_5|Last name of politician (for experiment)|
+|last_name_voter|Last name of voter (for experiment)|
+|female_first_name_1|First name of female politician (for experiment)|
+|female_first_name_2|First name of female politician (for experiment)|
+|female_first_name_3|First name of female politician (for experiment)|
+|female_first_name_4|First name of female politician (for experiment)|
+|female_first_name_5|First name of female politician (for experiment)|
+|female_first_name_voter|First name of  female voter (for experiment)|
+|male_first_name_1|First name of male politician (for experiment)|
+|male_first_name_2|First name of male politician (for experiment)|
+|male_first_name_3|First name of male politician (for experiment)|
+|male_first_name_4|First name of male politician (for experiment)|
+|male_first_name_5|First name of male politician (for experiment)|
+|male_first_name_voter|First name of male voter (for experiment)|
+|largest_party_left|Largest leftist party|
+|lower_house|Name of the lower house|
+|largest_party_right|Largest party on the right|
+|bilendi_project_id_complete|Id for complete survey (for bilendi)|
+|bilendi_project_id_quota|Id out because of quotas  (for bilendi)|
+|bilendi_project_id_screenout|Id screened out  (for bilendi)|
+|bilendi_project_id_quality|Id that did not pass quality test  (for bilendi)|
+|largest_party|Lrgest party|
+|country|Country of respondent|
+|educEmbeeded|Variable to embeed the education values|
+|termination_reason|Reson of termination if creened out|
+|text_party_when_one|Preffered party of respondent|
+|region_to_mention|Region of respondent (for local not local)|
+|determinants_region|Determinant to embeed the respondent region|
+|local_or_notlocal_text|Text given in the local not local experiment|
+|det_part|Determinant for party|
+|c_attrib_1_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_1_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_1_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_2_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_2_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_2_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_3_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_3_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_3_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_4_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_4_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_4_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_5_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_5_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_5_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_6_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_6_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_6_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_7_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_7_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_7_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_8_name|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_8_pol1|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_attrib_8_pol2|Variable to randomize the order and the attribute of politician for the conjoint experiment|
+|c_age_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_age_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_career_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_career_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_gender_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_gender_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_legeff_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_legeff_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_voteror_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_voteror_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_voterknow_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_voterknow_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_prof_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_prof_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_smedia_val_pol1|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|c_smedia_val_pol2|Text value of attribute for local not local (use numerical values to avoid translation issues)|
+|moduleETreatment|Treatment for module E. Did not work all the time so other variable is mentionned|
+|current_or_last|Current or last employement|
+|current_or_last_1|Current or last employement|
+|current_or_last_2|Current or last employement|
+|centraltreatment.LOCALVSNOTLOCAL.male_DO|Treatment local not local. Used another global variable|
+|centraltreatment.LOCALVSNOTLOCAL.female_DO|Treatment local not local. Used another global variable|
+|ModuleB.whatpoliticiansdo.Outcomequestions_DO|Tratment module B. Used another varaible|
+|party_vote_text|Party votd for|
+|which_member_text|Member of party|
+|which_cl_party_text|Party close |
+
+

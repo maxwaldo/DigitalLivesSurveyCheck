@@ -1,0 +1,53 @@
+library(dplyr)
+library(ggplot2)
+######### Check response collection time ##############
+
+data_bilendi <- read.csv("Digital Lives Second survey_allrecoded.csv")
+
+data_bilendi$count <- 1
+
+data_bilendi$dat <- as.Date(data_bilendi$StartDate, "%Y-%m-%d")
+
+
+data_bilendi <- data_bilendi %>% 
+  mutate(country = ifelse(UserLanguage=="FR", "France", 
+                          ifelse(UserLanguage=="DE", "Germany",
+                                 ifelse(UserLanguage=="EN-GB", "United Kingdom",
+                                        ifelse(UserLanguage=="CH-DE" | UserLanguage=="CH-FR", "Switzerland", 
+                                               ifelse(UserLanguage=="BE-FR"|UserLanguage =="BE-NL", "Belgium",
+                                                      ifelse(UserLanguage=="PL", "Poland", 
+                                                             ifelse(UserLanguage=="NL", "Netherlands", NA))))))))
+
+
+## 15 of september --> email of Simone Flaschel
+data_launch3 <- data_bilendi[data_bilendi$country=="Belgium" | data_bilendi$country=="Poland" | data_bilendi$country =="Netherlands", ]
+
+data_launch3 <- data_launch3 %>% 
+  mutate(release_quotas= ifelse(dat<as.Date("2021-09-15"), 0, 1)) %>% 
+  group_by(release_quotas) %>% 
+  mutate(count_sum = sum(count))
+
+table(data_launch3$country, data_launch3$release_quotas)
+
+# 22 of July email from me to Anna lena
+
+data_launch2 <- data_bilendi[data_bilendi$country=="France" | data_bilendi$country=="United Kingdom", ]
+
+data_launch2 <- data_launch2 %>% 
+  mutate(release_quotas= ifelse(dat<as.Date("2021-07-22"), 0, 1)) %>% 
+  group_by(release_quotas) %>% 
+  mutate(count_sum = sum(count))
+
+table(data_launch2$country, data_launch2$release_quotas)
+
+# 21 of June email from and to anna-lena
+
+data_launch1 <- data_bilendi[data_bilendi$country=="Switzerland" | data_bilendi$country=="Germany", ]
+
+data_launch1 <- data_launch1 %>% 
+  mutate(release_quotas= ifelse(dat<as.Date("2021-06-21"), 0, 1)) %>% 
+  group_by(release_quotas) %>% 
+  mutate(count_sum = sum(count))
+
+table(data_launch1$country, data_launch1$release_quotas)
+

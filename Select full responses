@@ -1,0 +1,42 @@
+library(dplyr)
+
+data_bil <- read.csv("Digital Lives Second survey_allrecoded.csv")
+
+
+length(data_bil$m)
+length(unique(data_bil$m))
+
+data_bil$m2 <- as.numeric(as.factor(data_bil$m))
+
+
+data_bil <- data_bil %>% 
+  group_by(m2) %>% 
+  mutate(order_resp = as.numeric(as.factor(StartDate)),
+         max_resp = max(order_resp))
+
+table(data_bil$order_resp)
+table(data_bil$max_resp)
+
+
+data_bil2 <- data_bil[data_bil$order_resp==1,]
+
+data_bil3 <- data_bil[data_bil$max_resp==1,]
+
+data_bil <- data_bil %>% 
+  mutate(finished_all = ifelse(local_or_notlocal_social_network=="", 0, 1),
+         keep = ifelse(max_resp>1 & finished_all==0, 1, 0))
+
+data_bil4 <- data_bil[data_bil$keep==0,]
+
+data_bil4 <- data_bil4 %>% 
+  group_by(m2) %>% 
+  mutate(order_resp = as.numeric(as.factor(StartDate)),
+         max_resp = max(order_resp))
+
+data_bil4 <- data_bil4[data_bil4$max_resp==1,]
+
+
+write.csv(data_bil2, "Digital Lives Second survey_allrecoded_only first response.csv")
+write.csv(data_bil3, "Digital Lives Second survey_allrecoded_only one response.csv")
+write.csv(data_bil4, "Digital Lives Second survey_allrecoded_full and unique response.csv")
+
